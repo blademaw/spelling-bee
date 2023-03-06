@@ -11,10 +11,10 @@ find_words(Center, String, ValidWords) :-
         (
             word(Word),
             string_chars(Word, WordChars),
-            subset(WordChars, Letters),
             member(Center, WordChars),
-            length(WordChars, WordLength), 
-            WordLength >= 4 % redundant if parsed file is already pruned
+            subset(WordChars, Letters),
+            length(WordChars, WordLength), % redundant if parsed file is already pruned
+            WordLength >= 4 
         ),
         Words),
     sort(Words, ValidWords).
