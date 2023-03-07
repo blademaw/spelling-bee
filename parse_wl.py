@@ -5,6 +5,8 @@ import sys, os
 def out_wl(filename):
     with open(filename, 'r') as f:
         contents = f.read().split()
+    
+    # TODO: add word normalization -- strip accents & punctuation. 
     contents = [word for word in contents if len(word) >= 4]
     with open('out.txt', 'w+') as f_o:
         f_o.write("\n".join(contents))
