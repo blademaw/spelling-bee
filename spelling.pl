@@ -33,3 +33,21 @@ find_pangrams(Chars, SortedPangrams) :-
         ),
         Pangrams),
     sort(Pangrams, SortedPangrams).
+
+perfect_pangram(Chars, Pangram) :-
+    string_chars(Chars, Letters),
+    string_chars(Pangram, PanChars),
+    same_length(PanChars, Letters),
+    sort(PanChars, SortedPan),
+    sort(Letters, SortedPan).
+
+find_perfect_pangrams(Chars, PerfectPangrams) :-
+    findall(
+        PerfectPangram,
+        (
+            find_pangrams(Chars, SortedPangrams),
+            member(PerfectPangram, SortedPangrams),
+            perfect_pangram(Chars, PerfectPangram)
+        ),
+        PerfectPangrams
+    ).
