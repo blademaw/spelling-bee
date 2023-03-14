@@ -3,8 +3,9 @@ import Data.List (nub, sort)
 
 main :: IO ()
 main = do
-    ((center:_):outer:_) <- getArgs
-    wordList <- lines <$> readFile "out.txt"
+    [center:_, outer, inFile] <- getArgs
+    wordList <- lines <$> readFile inFile
+    -- wordList <- lines <$> readFile "out.txt"
     let valids = getValidWords center outer wordList
     putStrLn $ outputWords center outer valids
     displayMatrix (outputMatrixValids valids) (sort (nub (map head valids)))
