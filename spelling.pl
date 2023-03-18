@@ -1,8 +1,9 @@
 % Load valid English words
 :- [parsedWords].
 
-/* Predicate that holds when all possible words are defined with a center
-   character & outer letters */
+% find_words(+Center, +String, -ValidWords)
+% Center is the center letter (as an atom), String is a string of all outer
+% letters (in any order), ValidWords is the set of all valid words.
 find_words(Center, String, ValidWords) :-
     string_chars(String, OuterLetters),
     append([Center], OuterLetters, Letters),
@@ -13,14 +14,16 @@ find_words(Center, String, ValidWords) :-
             string_chars(Word, WordChars),
             member(Center, WordChars),
             subset(WordChars, Letters),
-            length(WordChars, WordLength), % redundant if parsed file is already pruned
+            length(WordChars, WordLength), % redundant if already pruned
             WordLength >= 4 
         ),
         Words),
     sort(Words, ValidWords).
 
-/* Pangram — holds when SortedPangrams contains all pangrams of characters
-  within dictionary (not necessarily 'perfect' pangrams) */
+
+% find_pangrams(+Chars, -SortedPangrams)
+% Chars is a string of all letters (outer + inner) exactly once, and
+% SortedPangrams is the set of all pangrams resulting from Chars.
 find_pangrams(Chars, SortedPangrams) :-
     string_chars(Chars, Letters),
     findall(
@@ -34,6 +37,9 @@ find_pangrams(Chars, SortedPangrams) :-
         Pangrams),
     sort(Pangrams, SortedPangrams).
 
+
+% perfect_pangram(+Chars, +Pangram)
+% Holds if Pangram is a string that is just a reordering of the string Chars.
 perfect_pangram(Chars, Pangram) :-
     string_chars(Chars, Letters),
     string_chars(Pangram, PanChars),
@@ -41,6 +47,10 @@ perfect_pangram(Chars, Pangram) :-
     sort(PanChars, SortedPan),
     sort(Letters, SortedPan).
 
+
+% find_perfect_pangrams(+Chars, -PerfectPangrams)
+% PerfectPangrams is the set of all pangrams of the string of letters Chars
+% that use each letter exactly once.
 find_perfect_pangrams(Chars, PerfectPangrams) :-
     findall(
         PerfectPangram,
